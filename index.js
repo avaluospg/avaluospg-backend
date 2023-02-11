@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 
+const morgan = require("morgan")
+
 const app = express();
 
 let corsOptions = {
@@ -26,6 +28,9 @@ db.mongoose
         process.exit();
     });
 
+//middlewares
+app.use(morgan("dev"));
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
 
@@ -36,7 +41,8 @@ app.get("/", (req, res) => {
 
 require("./routes/tutorial.route")(app);
 require("./routes/user.route")(app);
-require("./routes/form.route")(app);
+require("./routes/evaluation.route")(app);
+require("./routes/role.route")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
