@@ -11,9 +11,9 @@ module.exports = app => {
     
     router.get("/", users.findAll);
 
-    router.post("/login", passport.authenticate( {successReturnToOrRedirect: '/',
-    failureRedirect: '/login',
-    failureMessage: true }));
-        
+    router.post("/signin", users.signin);
+
+    router.get("/logout", users.logout);
+
     app.use('/api/users', router);
 };

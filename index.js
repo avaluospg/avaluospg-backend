@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const passport = require("passport");
 
 const morgan = require("morgan")
 
@@ -30,6 +31,7 @@ db.mongoose
 
 //middlewares
 app.use(morgan("dev"));
+app.use(passport.initialize());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
@@ -43,6 +45,7 @@ require("./routes/tutorial.route")(app);
 require("./routes/user.route")(app);
 require("./routes/evaluation.route")(app);
 require("./routes/role.route")(app);
+require("./config/passport")
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

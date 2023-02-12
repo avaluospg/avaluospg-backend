@@ -1,8 +1,6 @@
 const db = require("../models");
 const User = db.user;
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
-var crypto = require('crypto');
+const passport = require("passport")
 
 // Create and Save a new Users
 exports.create = (req, res) => {
@@ -51,19 +49,10 @@ exports.findAll = (req, res) => {
             });
         });
 };
-exports.login = (req, res, next) => {
-    passport.use(new LocalStrategy(function verify(req,res, cb) {
-        var email = req.body.email;
-        var password = req.body.password;
-        var data = {
-            email: email,
-            password: password
-        }
-        User.findOne(data, function(err, user) {
-            if (err) { return cb(err); }
-            if (!user) {return cb(null,false, {message: "incorrect username or password"});}
-            return cb(null, user);
-        })
-        
-      }));
+exports.signin = passport.authenticate("local", {
+    failureRedirect: "/api/users/logout",
+    successRedirect: "/"
+})
+exports.logout = (req,res)=>{
+    res.send("logout")
 }
