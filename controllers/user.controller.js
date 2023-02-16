@@ -49,6 +49,10 @@ exports.findAll = (req, res) => {
             });
         });
 };
+
+
+
+
 exports.signin = passport.authenticate("local", {
     failureRedirect: "/api/users/logout",
     successRedirect: "/"

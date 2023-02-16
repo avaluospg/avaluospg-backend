@@ -1,15 +1,15 @@
 const db = require("../models");
-const Evaluation = db.evaluation;
+const Evaluation = db.evaluations;
 
-// Create and Save a new evaluation
+// Create and Save a new Tutorial
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.nroAv) {
+    if (!req.body.id) {
         res.status(400).send({message: "Content can not be empty!"});
         return;
     }
 
-    // Create a evaluation
+    // Create a Tutorial
     const evaluation = new Evaluation({
         id: req.body.id,
         date: req.body.date,
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
         published: req.body.published ? req.body.published : false
     });
 
-    // Save evaluation in the database
+    // Save Tutorial in the database
     evaluation
         .save(evaluation)
         .then(data => {
@@ -32,15 +32,15 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the evaluation."
+                    err.message || "Some error occurred while creating the Tutorial."
             });
         });
 };
 
-// Retrieve all evaluations from the database.
+// Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-    const nroAv = req.query.nroAv;
-    let condition = nroAv ? {nroAv: {$regex: new RegExp(nroAv), $options: "i"}} : {};
+    const id = req.query.id;
+    let condition = id ? {id: {$regex: new RegExp(id), $options: "i"}} : {};
 
     Evaluation.find(condition)
         .then(data => {
@@ -49,7 +49,22 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving evaluations."
+                    err.message || "Some error occurred while retrieving tutorials."
             });
         });
 };
+
+exports.getEvaluation = async (req, res) => {
+    const evaluation = await Evaluation.findById(req.params.id)
+    res.json({evaluation})
+};
+
+exports.editEvaluation = async(req, res) => {
+    await Evaluation.findByIdAndUpdate(req.params.id, req.body)
+    res.json({status: "Evaluation updated"})
+};
+
+exports.archiveEvaluation = (req, res) => {
+
+};
+

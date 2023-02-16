@@ -18,5 +18,5 @@ module.exports = mongoose => {
         )
     );
 
-    return Evaluation;
+    return Evaluation
 };
