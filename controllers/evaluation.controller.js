@@ -1,7 +1,7 @@
 const db = require("../models");
 const Evaluation = db.evaluations;
 
-// Create and Save a new Tutorial
+// Create and Save a new Evaluation
 exports.create = (req, res) => {
     // Validate request
     if (!req.body.id) {
@@ -9,7 +9,7 @@ exports.create = (req, res) => {
         return;
     }
 
-    // Create a Tutorial
+    // Create a Evaluation
     const evaluation = new Evaluation({
         id: req.body.id,
         date: req.body.date,
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
         published: req.body.published ? req.body.published : false
     });
 
-    // Save Tutorial in the database
+    // Save Evaluation in the database
     evaluation
         .save(evaluation)
         .then(data => {
@@ -32,12 +32,12 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Tutorial."
+                    err.message || "Some error occurred while creating the Evaluation."
             });
         });
 };
 
-// Retrieve all Tutorials from the database.
+// Retrieve all Evaluations from the database.
 exports.findAll = (req, res) => {
     const id = req.query.id;
     let condition = id ? {id: {$regex: new RegExp(id), $options: "i"}} : {};
@@ -49,21 +49,24 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving tutorials."
+                    err.message || "Some error occurred while retrieving Evaluations."
             });
         });
 };
 
+// Getting an Evaluation
 exports.getEvaluation = async (req, res) => {
     const evaluation = await Evaluation.findById(req.params.id)
     res.json({evaluation})
 };
 
+// Editing an Evaluation
 exports.editEvaluation = async(req, res) => {
     await Evaluation.findByIdAndUpdate(req.params.id, req.body)
     res.json({status: "Evaluation updated"})
 };
 
+// Archive an Evaluation
 exports.archiveEvaluation = (req, res) => {
 
 };
