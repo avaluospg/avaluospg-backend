@@ -3,8 +3,21 @@ const evaluationCtrl = {}
 const Evaluation = require("../models/evaluation.model.js")
 
 evaluationCtrl.getEvaluations = async (req, res) => {
-    const evaluations = await Evaluation.find()
-    res.json(evaluations)
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const skip = (page - 1) * pageSize;
+
+    const totalRecords = await Evaluation.countDocuments();
+    const evaluations = await Evaluation.find().skip(skip).limit(pageSize);
+
+    res.json({
+        evaluations,
+        totalRecords,
+        currentPage: page,
+        totalPages: Math.ceil(totalRecords / pageSize)
+    });
+    // const evaluations = await Evaluation.find()
+    // res.json(evaluations)
 }
 
 evaluationCtrl.createEvaluation = async (req, res) => {

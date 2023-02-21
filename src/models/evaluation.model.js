@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose")
 
 const evaluationSchema = new Schema({
-    id: {type: String, require: true},
+    number_id: {type: String, require: true},
     date: {type: String, require: true},
     instructedBy: {type: String, require: true},
     requester: {type: String, require: true},
