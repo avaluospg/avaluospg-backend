@@ -12,7 +12,7 @@ module.exports = mongoose => {
                 ConditionOfTheProperty: String,
                 change: String,
                 department: String,
-                published: Boolean
+                active: Boolean
             },
             { timestamps: true }
         )
