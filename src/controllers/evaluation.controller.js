@@ -4,21 +4,22 @@ const Evaluation = require("../models/evaluation.model.js")
 
 evaluationCtrl.getEvaluations = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 10;
-    const skip = (page - 1) * pageSize;
+    const limit = parseInt(req.query.limit) || 2;
+    console.log("pageSize", req.query.limit);// Cambiar el nombre del parámetro a "limit"
+    const skip = (page - 1) * limit;
 
     const totalRecords = await Evaluation.countDocuments();
-    const evaluations = await Evaluation.find().skip(skip).limit(pageSize);
+    const totalPages = Math.ceil(totalRecords / limit);
+    const evaluations = await Evaluation.find().skip(skip).limit(limit).exec();
 
     res.json({
         evaluations,
         totalRecords,
         currentPage: page,
-        totalPages: Math.ceil(totalRecords / pageSize)
+        totalPages
     });
-    // const evaluations = await Evaluation.find()
-    // res.json(evaluations)
 }
+
 
 evaluationCtrl.createEvaluation = async (req, res) => {
     const newEvaluation = new Evaluation(req.body)
@@ -31,20 +32,18 @@ evaluationCtrl.createEvaluation = async (req, res) => {
 
 evaluationCtrl.getEvaluation = async (req, res) => {
     console.log(req.params)
-    const evaluation = await Evaluation.findById( req.params.id )
+    const evaluation = await Evaluation.findById( req.params.number_id )
     res.send(evaluation)
 }
 
 evaluationCtrl.editEvaluation = async (req, res) => {
-    await Evaluation.findByIdAndUpdate(req.params.id, req.body)
+    await Evaluation.findByIdAndUpdate(req.params.number_id, req.body)
     res.json({ status: "Evaluation Updated" })
 }
 
 evaluationCtrl.deleteEvaluation = async (req, res) => {
-    await Evaluatione.findByIdAndDelete(req.params.id)
+    await Evaluation.findByIdAndDelete(req.params.number_id)
     res.json({status: "Evaluation Delete"})
 }
-
-
 
 module.exports = evaluationCtrl;
