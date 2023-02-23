@@ -9,6 +9,7 @@ const evaluationSchema = new Schema({
     ConditionOfTheProperty: {type: String, required: true},
     change: {type: String, required: true},
     department: {type: String, required: true},
+    active: {type: Boolean, required: true},
 }, {
     timestamps: true,
     versionKey: false,

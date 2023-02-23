@@ -4,8 +4,8 @@ const Evaluation = require("../models/evaluation.model.js")
 
 evaluationCtrl.getEvaluations = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
-    console.log("pageSize", req.query.limit);// Cambiar el nombre del parámetro a "limit"
+    const limit = parseInt(req.query.limit) || 10;
+    console.log("pageSize", req.query.limit);
     const skip = (page - 1) * limit;
 
     const totalRecords = await Evaluation.countDocuments();
@@ -36,9 +36,24 @@ evaluationCtrl.getEvaluation = async (req, res) => {
     res.send(evaluation)
 }
 
+evaluationCtrl.updateEvaluationActive = async (req, res) => {
+    const extra = await Evaluation.findById( req.body.number_id)
+    const active = await Evaluation.findById( req.params.active)
+    const evaluation = await Evaluation.findByIdAndUpdate(req.params.number_id, { active: req.body.active }, { new: true });
+    res.json({ status: "Evaluation archived", evaluation, "number_id:":extra, "active":active});
+}
+
 evaluationCtrl.editEvaluation = async (req, res) => {
     await Evaluation.findByIdAndUpdate(req.params.number_id, req.body)
     res.json({ status: "Evaluation Updated" })
+}
+
+evaluationCtrl.getEvaluation = async (req, res) => {
+    const evaluation = await Evaluation.findOne({ number_id: req.params.id });
+    if (!evaluation) {
+        return res.status(404).json({ message: "Evaluation not found" });
+    }
+    res.json(evaluation);
 }
 
 evaluationCtrl.deleteEvaluation = async (req, res) => {

@@ -8,6 +8,7 @@ const passport = require("passport");
 // Initializations
 const app= express()
 require("./config/passport");
+const evaluationCtrl = require("./controllers/evaluation.controller");
 
 
 // Middlewares
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 app.get("/fail", (req, res) => {
     res.json({message: "fail."});
 });
+app.get('/api/evaluations/:id', evaluationCtrl.getEvaluation);
 
 
 module.exports = app;
