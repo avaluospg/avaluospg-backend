@@ -10,7 +10,7 @@ evaluationCtrl.getEvaluations = async (req, res) => {
 
     const totalRecords = await Evaluation.countDocuments();
     const totalPages = Math.ceil(totalRecords / limit);
-    const evaluations = await Evaluation.find().skip(skip).limit(limit).exec();
+    const evaluations = await Evaluation.find({active: {$eq: true}}).skip(skip).limit(limit).exec();
 
     res.json({
         evaluations,
@@ -27,31 +27,31 @@ evaluationCtrl.createEvaluation = async (req, res) => {
 
     await newEvaluation.save()
 
-    res.send({ message: "Evaluation created" })
+    res.send({message: "Evaluation created"})
 }
 
 evaluationCtrl.getEvaluation = async (req, res) => {
     console.log(req.params)
-    const evaluation = await Evaluation.findById( req.params.number_id )
+    const evaluation = await Evaluation.findById(req.params.number_id)
     res.send(evaluation)
 }
 
 evaluationCtrl.updateEvaluationActive = async (req, res) => {
-    const extra = await Evaluation.findById( req.body.number_id)
-    const active = await Evaluation.findById( req.params.active)
-    const evaluation = await Evaluation.findByIdAndUpdate(req.params.number_id, { active: req.body.active }, { new: true });
-    res.json({ status: "Evaluation archived", evaluation, "number_id:":extra, "active":active});
+    const extra = await Evaluation.findById(req.body.number_id)
+    const active = await Evaluation.findById(req.params.active)
+    const evaluation = await Evaluation.findByIdAndUpdate(req.params.number_id, {active: req.body.active}, {new: true});
+    res.json({status: "Evaluation archived", evaluation, "number_id:": extra, "active": active});
 }
 
 evaluationCtrl.editEvaluation = async (req, res) => {
     await Evaluation.findByIdAndUpdate(req.params.number_id, req.body)
-    res.json({ status: "Evaluation Updated" })
+    res.json({status: "Evaluation Updated"})
 }
 
 evaluationCtrl.getEvaluation = async (req, res) => {
-    const evaluation = await Evaluation.findOne({ number_id: req.params.id });
+    const evaluation = await Evaluation.findOne({number_id: req.params.id});
     if (!evaluation) {
-        return res.status(404).json({ message: "Evaluation not found" });
+        return res.status(404).json({message: "Evaluation not found"});
     }
     res.json(evaluation);
 }
