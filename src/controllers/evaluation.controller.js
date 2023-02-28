@@ -36,6 +36,27 @@ evaluationCtrl.getEvaluation = async (req, res) => {
     res.send(evaluation)
 }
 
+evaluationCtrl.getSearchEvaluations = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const searchData = req.query.searchData;
+    const active = req.query.activeItem;
+    const totalRecords = await Evaluation.countDocuments();
+    const totalPages = Math.ceil(totalRecords / limit);
+    const evaluations = await Evaluation.find({
+        active: {$eq: active},
+        $or: [{number_id: {$eq: searchData}},
+            {requester: {$regex: new RegExp(searchData, "i")}}]
+    }).skip(skip).limit(limit).exec();
+    res.json({
+        evaluations,
+        totalRecords,
+        currentPage: page,
+        totalPages
+    });
+}
+
 evaluationCtrl.updateEvaluationActive = async (req, res) => {
     const extra = await Evaluation.findById(req.body.number_id)
     const active = await Evaluation.findById(req.params.active)

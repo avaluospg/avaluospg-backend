@@ -1,10 +1,12 @@
-const { Router } = require("express")
+const {Router} = require("express")
 const router = Router()
 
 const evaluationCtrl = require("../controllers/evaluation.controller.js")
 
 
 router.get("/", evaluationCtrl.getEvaluations);
+
+router.get("/search", evaluationCtrl.getSearchEvaluations);
 
 router.post("/", evaluationCtrl.createEvaluation);
 
