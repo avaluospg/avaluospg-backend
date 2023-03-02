@@ -14,7 +14,7 @@ router.get("/number_id/", evaluationCtrl.getEvaluations)
 
 router.get("/:id", evaluationCtrl.getEvaluation);
 
-router.put("/:id", evaluationCtrl.editEvaluation);
+router.put("/:number_id", evaluationCtrl.editEvaluation);
 
 router.delete("/:id", evaluationCtrl.deleteEvaluation);
 

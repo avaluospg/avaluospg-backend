@@ -65,9 +65,15 @@ evaluationCtrl.updateEvaluationActive = async (req, res) => {
 }
 
 evaluationCtrl.editEvaluation = async (req, res) => {
-    await Evaluation.findByIdAndUpdate(req.params.number_id, req.body)
-    res.json({status: "Evaluation Updated"})
-}
+    try {
+        await Evaluation.findByIdAndUpdate(req.params.number_id, req.body);
+        res.json({ status: "Evaluation Updated" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error updating evaluation" });
+    }
+};
+
 
 evaluationCtrl.getEvaluation = async (req, res) => {
     const evaluation = await Evaluation.findOne({number_id: req.params.id});
