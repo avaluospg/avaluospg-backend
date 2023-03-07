@@ -10,6 +10,7 @@ const evaluationSchema = new Schema({
     change: {type: String, required: true},
     department: {type: String, required: true},
     active: {type: Boolean, required: true},
+    stepProgress: {type: String, required: true},
 }, {
     timestamps: true,
     versionKey: false,

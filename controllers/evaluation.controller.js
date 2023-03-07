@@ -5,11 +5,6 @@ db.evaluations.find().skip(2).limit(2)
 
 // Create and Save a new Evaluation
 exports.create = (req, res) => {
-    // Validate request
-    // if (!req.body.number_id) {
-    //     res.status(400).send({message: "Content can not be empty!"});
-    //     return;
-    // }
 
     // Create a Evaluation
     const evaluation = new Evaluation({
@@ -69,23 +64,6 @@ exports.findAll = async (req, res) => {
         });
     }
 };
-
-
-// const id = req.query.number_id;
-// let condition = id ? {number_id: {$regex: new RegExp(id), $options: "i"}} : {};
-//
-// Evaluation.find(condition)
-//     .then(data => {
-//         res.send(data);
-//     })
-//     .catch(err => {
-//         res.status(500).send({
-//             message:
-//                 err.message || "Some error occurred while retrieving Evaluations."
-//         });
-//     });
-// }
-// ;
 
 // Getting an Evaluation
 exports.getEvaluation = async (req, res) => {
